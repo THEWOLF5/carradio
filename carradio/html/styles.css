@@ -1,0 +1,215 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: transparent;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.radio-container {
+    display: flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 500px;
+    background-color: #1a1a1d;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.sidebar {
+    width: 80px;
+    background-color: #111;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.metric {
+    margin-bottom: 30px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.metric i {
+    font-size: 24px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    color: #aaa;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-bottom: 2px solid transparent;
+}
+
+.tab-button.active {
+    color: #fff;
+    border-bottom: 2px solid #c3073f;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.player {
+    text-align: center;
+}
+
+.album-art {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.song-info .title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.song-info .artist {
+    font-size: 16px;
+    color: #aaa;
+    margin-bottom: 20px;
+}
+
+.progress-bar-container {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    background-color: #444;
+    height: 5px;
+    border-radius: 2.5px;
+    cursor: pointer;
+}
+
+.progress {
+    background-color: #c3073f;
+    height: 100%;
+    width: 0;
+    border-radius: 2.5px;
+}
+
+.time {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 5px;
+}
+
+.controls button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    margin: 0 15px;
+    cursor: pointer;
+}
+
+.controls button:disabled {
+    color: #555;
+    cursor: not-allowed;
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#volume-slider {
+    width: 150px;
+    margin: 0 10px;
+}
+
+.playlist-section {
+    margin-top: auto;
+    background-color: #222;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#playlist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 80px;
+    overflow-y: auto;
+}
+
+#playlist li {
+    padding: 5px;
+    cursor: pointer;
+}
+
+#playlist li:hover, #playlist li.active {
+    background-color: #c3073f;
+}
+
+#clear-playlist {
+    background-color: #c3073f;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#youtube-player {
+    display: none;
+}
+
+.search-bar {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+#youtube-link {
+    flex-grow: 1;
+    background-color: #333;
+    border: 1px solid #555;
+    color: #fff;
+    padding: 8px;
+    border-radius: 3px;
+}
+
+#add-to-playlist {
+    background-color: #c3073f;
+    border: none;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-left: 5px;
+}
