@@ -1,7 +1,6 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 local isRadioOpen = false
 local inVehicle = false
-local isAuthorized = false
 
 -- Function to check if player is in a vehicle
 function IsInVehicle()
@@ -16,7 +15,7 @@ RegisterCommand('carradio', function()
         SetNuiFocus(isRadioOpen, isRadioOpen)
         SendNUIMessage({ type = 'ui', status = isRadioOpen })
     else
-        QBCore.Functions.Notify('You must be in a vehicle to use the car radio.', 'error')
+        QBCore.Functions.Notify(Config.Locales['must_be_in_vehicle'], 'error')
     end
 end, false)
 
@@ -39,7 +38,7 @@ RegisterNUICallback('close', function(_, cb)
 end)
 
 RegisterNUICallback('setRadioChannel', function(data, cb)
-    if data.channel and data.channel > 0 then
+    if data.channel and tonumber(data.channel) > 0 then
         exports['pma-voice']:setVoiceProperty('radioChannel', tostring(data.channel))
     else
         exports['pma-voice']:setVoiceProperty('radioChannel', '0')
@@ -71,20 +70,22 @@ end)
 -- Voice restriction
 CreateThread(function()
     while true do
-        Wait(500)
+        Wait(5) -- More responsive check
         if isRadioOpen then
             local radioChannel = exports['pma-voice']:getVoiceProperty('radioChannel')
-            if radioChannel == '100.0' then
-                QBCore.Functions.TriggerCallback('carradio:isPlayerAuthorized', function(authorized)
-                    isAuthorized = authorized
-                end)
-                if not isAuthorized then
-                    if IsControlPressed(0, 249) then -- Push to talk
-                        QBCore.Functions.Notify("You are not authorized to speak on this frequency.", "error")
-                        DisableControlAction(0, 249, true)
+            if radioChannel == Config.RestrictedFrequency then
+                QBCore.Functions.TriggerCallback('carradio:isPlayerAuthorized', function(isAuthorized)
+                    if not isAuthorized then
+                        if IsControlPressed(0, 249) or IsControlPressed(0, 25) then -- Push to talk (N & T)
+                            DisableControlAction(0, 249, true)
+                            DisableControlAction(0, 25, true)
+                            QBCore.Functions.Notify(Config.Locales['not_authorized_frequency'], "error")
+                        end
                     end
-                end
+                end)
             end
+        else
+            Wait(1000) -- Sleep when radio is not open
         end
     end
 end)
