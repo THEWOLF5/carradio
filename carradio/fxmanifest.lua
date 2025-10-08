@@ -3,15 +3,19 @@ game 'gta5'
 
 author 'YourName'
 description 'Advanced Car Radio System'
-version '1.0.0'
+version '2.0.0'
 
-shared_script {
-    '@qb-core/shared/locale.lua',
-    'config.lua'
+shared_scripts {
+    'config.lua',
+    'items.lua'
 }
-dependencies {
-    'qb-core',
-    'pma-voice'
+
+client_scripts {
+    'client.lua'
+}
+
+server_scripts {
+    'server.lua'
 }
 
 ui_page 'html/index.html'
@@ -19,8 +23,11 @@ ui_page 'html/index.html'
 files {
     'html/index.html',
     'html/styles.css',
-    'html/script.js'
+    'html/script.js',
+    'html/assets/logo.png'
 }
 
-client_script 'client.lua'
-server_script 'server.lua'
+dependencies {
+    'qb-core',
+    'xsound'
+}

@@ -1,23 +1,13 @@
 Config = {}
 
--- The frequency that requires authorization to speak on
-Config.RestrictedFrequency = '100.0'
+Config.RadioItem = "radio" -- The item name for the car radio
 
--- The job name that is authorized to grant radio access
-Config.AuthorizedJob = 'police'
+Config.ServerLogo = "assets/logo.png" -- Path to your server logo (inside html/assets/)
 
--- The minimum grade level required to grant radio access
-Config.RequiredGrade = 4
-
--- Locales
-Config.Locales = {
-    ['must_be_in_vehicle'] = 'You must be in a vehicle to use the car radio.',
-    ['access_granted'] = 'You have granted radio access to player %s.',
-    ['access_revoked'] = 'You have revoked radio access for player %s.',
-    ['your_access_granted'] = 'You have been granted radio access.',
-    ['your_access_revoked'] = 'Your radio access has been revoked.',
-    ['player_not_found'] = 'Player not found.',
-    ['invalid_player_id'] = 'Invalid player ID.',
-    ['not_authorized_command'] = 'You are not authorized to use this command.',
-    ['not_authorized_frequency'] = 'You are not authorized to speak on this frequency.'
+Config.Stations = {
+    {name = "Pops!", url = "http://stream.url/pop"},
+    {name = "Rock'n'Roll", url = "http://stream.url/rock"},
+    {name = "Hip-Hop", url = "http://stream.url/hiphop"},
+    {name = "Electro", url = "http://stream.url/electro"},
+    {name = "Classical", url = "http://stream.url/classical"}
 }
