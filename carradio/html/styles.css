@@ -1,215 +1,81 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: transparent;
     color: #fff;
-    margin: 0;
-    padding: 0;
+    background-color: transparent;
     overflow: hidden;
 }
 
 .radio-container {
-    display: flex;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 800px;
-    height: 500px;
-    background-color: #1a1a1d;
+    width: 300px;
+    background-color: #1a1a1a;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid #333;
 }
 
-.sidebar {
-    width: 80px;
-    background-color: #111;
-    padding: 20px 0;
+.header {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background-color: #2c2c2c;
     border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
 }
 
-.metric {
-    margin-bottom: 30px;
-    font-size: 14px;
-    text-align: center;
-}
-
-.metric i {
-    font-size: 24px;
-    display: block;
-    margin-bottom: 5px;
-}
-
-.main-content {
+.header h1 {
+    font-size: 1.2em;
+    margin: 0;
     flex-grow: 1;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-.tabs {
-    display: flex;
-    margin-bottom: 20px;
-}
-
-.tab-button {
-    background: none;
-    border: none;
-    color: #aaa;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    border-bottom: 2px solid transparent;
-}
-
-.tab-button.active {
-    color: #fff;
-    border-bottom: 2px solid #c3073f;
-}
-
-.tab-content {
-    display: none;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-.player {
     text-align: center;
 }
 
-.album-art {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 20px;
+.logo {
+    width: 40px;
+    height: 40px;
 }
 
-.song-info .title {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.song-info .artist {
-    font-size: 16px;
-    color: #aaa;
-    margin-bottom: 20px;
-}
-
-.progress-bar-container {
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-.progress-bar {
-    background-color: #444;
-    height: 5px;
-    border-radius: 2.5px;
-    cursor: pointer;
-}
-
-.progress {
-    background-color: #c3073f;
-    height: 100%;
-    width: 0;
-    border-radius: 2.5px;
-}
-
-.time {
-    font-size: 12px;
-    color: #aaa;
-    margin-top: 5px;
-}
-
-.controls button {
+.close-btn {
     background: none;
     border: none;
     color: #fff;
-    font-size: 20px;
-    margin: 0 15px;
+    font-size: 1.2em;
     cursor: pointer;
 }
 
-.controls button:disabled {
-    color: #555;
-    cursor: not-allowed;
-}
-
-.volume-control {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-#volume-slider {
-    width: 150px;
-    margin: 0 10px;
-}
-
-.playlist-section {
-    margin-top: auto;
-    background-color: #222;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-#playlist {
+.station-list {
     list-style: none;
     padding: 0;
     margin: 0;
-    max-height: 80px;
+    max-height: 200px;
     overflow-y: auto;
 }
 
-#playlist li {
-    padding: 5px;
+.station-list li {
+    padding: 15px;
+    border-bottom: 1px solid #333;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-#playlist li:hover, #playlist li.active {
-    background-color: #c3073f;
+.station-list li:hover {
+    background-color: #3c3c3c;
 }
 
-#clear-playlist {
-    background-color: #c3073f;
-    border: none;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 3px;
+.station-list li.active {
+    background-color: #5a5a5a;
+    font-weight: bold;
+}
+
+.controls {
+    padding: 15px;
+}
+
+.volume-slider {
+    width: 100%;
     cursor: pointer;
-    margin-top: 10px;
-}
-
-#youtube-player {
-    display: none;
-}
-
-.search-bar {
-    display: flex;
-    margin-bottom: 10px;
-}
-
-#youtube-link {
-    flex-grow: 1;
-    background-color: #333;
-    border: 1px solid #555;
-    color: #fff;
-    padding: 8px;
-    border-radius: 3px;
-}
-
-#add-to-playlist {
-    background-color: #c3073f;
-    border: none;
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 3px;
-    cursor: pointer;
-    margin-left: 5px;
 }

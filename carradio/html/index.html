@@ -5,81 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Car Radio</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 </head>
 <body>
     <div class="radio-container" style="display: none;">
-        <div class="sidebar">
-            <div class="metric"><i class="fas fa-music"></i> 18/36</div>
-            <div class="metric"><i class="fas fa-volume-up"></i> 75%</div>
-            <div class="metric"><i class="fas fa-snowflake"></i> 68°F</div>
-            <div class="metric"><i class="fas fa-star"></i> 4.5</div>
-            <div class="metric"><i class="fas fa-map-marker-alt"></i> 1.2mi</div>
+        <div class="header">
+            <img id="logo" src="" alt="Logo" class="logo">
+            <h1>Metro Radio</h1>
+            <button class="close-btn">X</button>
         </div>
-        <div class="main-content">
-            <div class="tabs">
-                <button class="tab-button active" data-tab="metrofm">MetroFM</button>
-                <button class="tab-button" data-tab="personal">Personal</button>
-            </div>
-            <div id="metrofm" class="tab-content active">
-                <div class="player">
-                    <img src="https://placehold.co/200x300?text=Metro+FM" alt="Album Art" class="album-art">
-                    <div class="song-info">
-                        <div class="title">MetroCity Radio</div>
-                        <div class="artist">Live Stream</div>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar">
-                            <div class="progress"></div>
-                        </div>
-                        <div class="time">LIVE</div>
-                    </div>
-                    <div class="controls">
-                        <button id="metro-prev" disabled><i class="fas fa-step-backward"></i></button>
-                        <button id="metro-play-pause"><i class="fas fa-play"></i></button>
-                        <button id="metro-next" disabled><i class="fas fa-step-forward"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div id="personal" class="tab-content">
-                <div class="player">
-                    <div class="search-bar">
-                        <input type="text" id="youtube-link" placeholder="Enter YouTube or YouTube Music link">
-                        <button id="add-to-playlist"><i class="fas fa-plus"></i></button>
-                    </div>
-                    <img src="https://placehold.co/200x300?text=Your+Music" alt="Album Art" class="album-art" id="personal-album-art">
-                    <div class="song-info">
-                        <div class="title" id="personal-title">No song selected</div>
-                        <div class="artist" id="personal-artist"></div>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" id="personal-progress-bar">
-                            <div class="progress" id="personal-progress"></div>
-                        </div>
-                        <div class="time"><span id="current-time">0:00</span> / <span id="total-time">0:00</span></div>
-                    </div>
-                    <div class="controls">
-                        <button id="personal-prev"><i class="fas fa-step-backward"></i></button>
-                        <button id="personal-play-pause"><i class="fas fa-play"></i></button>
-                        <button id="personal-next"><i class="fas fa-step-forward"></i></button>
-                        <button id="personal-shuffle"><i class="fas fa-random"></i></button>
-                        <button id="personal-repeat"><i class="fas fa-redo"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="volume-control">
-                <i class="fas fa-volume-down"></i>
-                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
-                <i class="fas fa-volume-up"></i>
-            </div>
-            <div class="playlist-section">
-                <h3>Playlist</h3>
-                <ul id="playlist"></ul>
-                <button id="clear-playlist">Clear Playlist</button>
-            </div>
+        <ul class="station-list">
+            <!-- Stations will be populated by script.js -->
+        </ul>
+        <div class="controls">
+            <input type="range" class="volume-slider" min="0" max="100" value="50">
         </div>
     </div>
-    <div id="youtube-player"></div>
     <script src="script.js"></script>
 </body>
 </html>

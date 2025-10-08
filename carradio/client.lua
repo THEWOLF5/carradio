@@ -1,90 +1,104 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 local isRadioOpen = false
-local inVehicle = false
-local isAuthorized = false
+local currentVehicle = nil
+local currentSound = nil
 
--- Function to check if player is in a vehicle
-function IsInVehicle()
-    local ped = PlayerPedId()
-    return IsPedInAnyVehicle(ped, false)
+-- Function to toggle the radio UI
+local function toggleRadioUI(status)
+    isRadioOpen = status
+    SetNuiFocus(isRadioOpen, isRadioOpen)
+    SendNUIMessage({ type = 'ui', status = isRadioOpen })
+
+    if isRadioOpen then
+        SendNUIMessage({
+            type = 'setup',
+            logo = Config.ServerLogo,
+            stations = Config.Stations
+        })
+    end
 end
 
--- Command to open the radio
-RegisterCommand('carradio', function()
-    if IsInVehicle() then
-        isRadioOpen = not isRadioOpen
-        SetNuiFocus(isRadioOpen, isRadioOpen)
-        SendNUIMessage({ type = 'ui', status = isRadioOpen })
-    else
-        QBCore.Functions.Notify('You must be in a vehicle to use the car radio.', 'error')
-    end
-end, false)
+-- Event to use the radio item
+RegisterNetEvent('carradio:use', function()
+    local ped = PlayerPedId()
+    local vehicle = GetVehiclePedIsIn(ped, false)
 
--- Close UI with Escape key
-RegisterKeyMapping('carradio', 'Close Car Radio', 'keyboard', 'ESCAPE')
-AddEventHandler('carradio', function()
-    if isRadioOpen then
-        isRadioOpen = false
-        SetNuiFocus(false, false)
-        SendNUIMessage({ type = 'ui', status = false })
+    if vehicle == 0 then
+        QBCore.Functions.Notify("You must be in a vehicle to use the radio.", "error")
+        return
     end
+
+    currentVehicle = vehicle
+    toggleRadioUI(not isRadioOpen)
 end)
 
--- NUI Message Handler
+-- NUI Callback for closing the UI (X button)
 RegisterNUICallback('close', function(_, cb)
-    isRadioOpen = false
-    SetNuiFocus(false, false)
-    SendNUIMessage({ type = 'ui', status = false })
+    toggleRadioUI(false)
     cb('ok')
 end)
 
-RegisterNUICallback('setRadioChannel', function(data, cb)
-    if data.channel and data.channel > 0 then
-        exports['pma-voice']:setVoiceProperty('radioChannel', tostring(data.channel))
-    else
-        exports['pma-voice']:setVoiceProperty('radioChannel', '0')
+-- NUI Callback for playing a station
+RegisterNUICallback('play', function(data, cb)
+    if not currentVehicle or not DoesEntityExist(currentVehicle) then return end
+
+    local vehicleNetId = VehToNet(currentVehicle)
+    TriggerServerEvent('carradio:sync', vehicleNetId, data.station, 0.5)
+    cb('ok')
+end)
+
+-- NUI Callback for adjusting volume
+RegisterNUICallback('volume', function(data, cb)
+    if not currentVehicle or not DoesEntityExist(currentVehicle) then return end
+
+    local vehicleNetId = VehToNet(currentVehicle)
+    TriggerServerEvent('carradio:syncVolume', vehicleNetId, data.volume)
+    cb('ok')
+end)
+
+-- Event to sync radio state from server
+RegisterNetEvent('carradio:playClient', function(vehicleNetId, url, volume)
+    local vehicle = NetToVeh(vehicleNetId)
+    if not vehicle or not DoesEntityExist(vehicle) then return end
+
+    local soundId = "carradio_" .. vehicleNetId
+
+    exports.xsound:destroy(soundId)
+    exports.xsound:playUrl(soundId, url, volume, false)
+    exports.xsound:attachToEntity(soundId, vehicle)
+    currentSound = soundId
+end)
+
+-- Event to sync volume state from server
+RegisterNetEvent('carradio:syncVolumeClient', function(vehicleNetId, volume)
+    local soundId = "carradio_" .. vehicleNetId
+    exports.xsound:setVolume(soundId, volume)
+end)
+
+-- Event to stop radio on client
+RegisterNetEvent('carradio:stopClient', function(vehicleNetId)
+    local soundId = "carradio_" .. vehicleNetId
+    exports.xsound:destroy(soundId)
+    if currentSound == soundId then
+        currentSound = nil
     end
-    cb('ok')
 end)
 
--- Check for vehicle status
+-- Thread to monitor player's vehicle status
 CreateThread(function()
     while true do
         Wait(1000)
         local ped = PlayerPedId()
         local vehicle = GetVehiclePedIsIn(ped, false)
 
-        if vehicle ~= 0 and not inVehicle then
-            inVehicle = true
-        elseif vehicle == 0 and inVehicle then
-            inVehicle = false
+        if currentVehicle and vehicle ~= currentVehicle then
             if isRadioOpen then
-                isRadioOpen = false
-                SetNuiFocus(false, false)
-                SendNUIMessage({ type = 'ui', status = false })
-                exports['pma-voice']:setVoiceProperty('radioChannel', '0')
+                toggleRadioUI(false)
             end
-        end
-    end
-end)
-
--- Voice restriction
-CreateThread(function()
-    while true do
-        Wait(500)
-        if isRadioOpen then
-            local radioChannel = exports['pma-voice']:getVoiceProperty('radioChannel')
-            if radioChannel == '100.0' then
-                QBCore.Functions.TriggerCallback('carradio:isPlayerAuthorized', function(authorized)
-                    isAuthorized = authorized
-                end)
-                if not isAuthorized then
-                    if IsControlPressed(0, 249) then -- Push to talk
-                        QBCore.Functions.Notify("You are not authorized to speak on this frequency.", "error")
-                        DisableControlAction(0, 249, true)
-                    end
-                end
-            end
+            local vehicleNetId = VehToNet(currentVehicle)
+            TriggerServerEvent('carradio:playerLeft', vehicleNetId)
+            currentVehicle = nil
+            currentSound = nil
         end
     end
 end)
